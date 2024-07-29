@@ -16,13 +16,15 @@ type (
 	}
 
 	userService struct {
-		userRepo repository.UserRepository
+		userRepo   repository.UserRepository
+		jwtService JWTService
 	}
 )
 
-func NewUserService(userRepo repository.UserRepository) UserService {
+func NewUserService(userRepo repository.UserRepository, jwtService JWTService) UserService {
 	return &userService{
-		userRepo: userRepo,
+		userRepo:   userRepo,
+		jwtService: jwtService,
 	}
 }
 

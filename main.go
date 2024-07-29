@@ -23,16 +23,17 @@ func main() {
 	}
 
 	var (
+		jwtService service.JWTService = service.NewJWTService()
 		// Implement Dependency injection
 		userRepository repository.UserRepository = repository.NewUserRepository(db)
-		userService    service.UserService       = service.NewUserService(userRepository)
+		userService    service.UserService       = service.NewUserService(userRepository, jwtService)
 		userController controller.UserController = controller.NewUserController(userService)
 	)
 
 	server := gin.Default()
 	server.Use(middlewares.CORSMiddleware())
 
-	routes.User(server, userController)
+	routes.User(server, userController, jwtService)
 
 	server.Static("/assets", "./assets")
 
