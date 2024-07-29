@@ -15,6 +15,7 @@ type (
 	UserService interface {
 		RegisterUser(ctx context.Context, req dto.UserCreateRequest) (dto.UserResponse, error)
 		Verify(ctx context.Context, req dto.UserLoginRequest) (dto.UserLoginResponse, error)
+		GetUserById(ctx context.Context, userId string) (dto.UserResponse, error)
 	}
 
 	userService struct {
@@ -86,5 +87,20 @@ func (s *userService) Verify(ctx context.Context, req dto.UserLoginRequest) (dto
 	return dto.UserLoginResponse{
 		Token: token,
 		Role:  check.Role,
+	}, nil
+}
+
+func (s *userService) GetUserById(ctx context.Context, userId string) (dto.UserResponse, error) {
+	user, err := s.userRepo.GetUserById(ctx, nil, userId)
+	if err != nil {
+		return dto.UserResponse{}, dto.ErrGetUserById
+	}
+
+	return dto.UserResponse{
+		ID:          user.ID.String(),
+		Name:        user.Name,
+		PhoneNumber: user.PhoneNumber,
+		Role:        user.Role,
+		Email:       user.Email,
 	}, nil
 }

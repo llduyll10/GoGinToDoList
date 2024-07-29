@@ -12,6 +12,7 @@ type (
 	UserController interface {
 		Register(ctx *gin.Context)
 		Login(ctx *gin.Context)
+		Me(ctx *gin.Context)
 	}
 	userController struct {
 		userService service.UserService
@@ -61,5 +62,20 @@ func (c *userController) Login(ctx *gin.Context) {
 	}
 
 	res := utils.BuildResponseSuccess(dto.MESSAGE_SUCCESS_LOGIN, result)
+	ctx.JSON(http.StatusOK, res)
+}
+
+func (c *userController) Me(ctx *gin.Context) {
+	userId := ctx.MustGet("user_id").(string)
+
+	result, err := c.userService.GetUserById(ctx.Request.Context(), userId)
+
+	if err != nil {
+		res := utils.BuildResponseFailed(dto.MESSAGE_FAILED_GET_USER, err.Error(), nil)
+		ctx.JSON(http.StatusBadRequest, res)
+		return
+	}
+
+	res := utils.BuildResponseSuccess(dto.MESSAGE_SUCCESS_GET_USER, result)
 	ctx.JSON(http.StatusOK, res)
 }
