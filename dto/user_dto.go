@@ -64,4 +64,14 @@ type (
 		Role        string `json:"role"`
 		PhoneNumber string `json:"phone_number"`
 	}
+
+	UserLoginRequest struct {
+		Email    string `json:"email" form:"email" binding:"required"`
+		Password string `json:"password" form:"password" binding:"required"`
+	}
+
+	UserLoginResponse struct {
+		Token string `json:"token"`
+		Role  string `json:"role"`
+	}
 )

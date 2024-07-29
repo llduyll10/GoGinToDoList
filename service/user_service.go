@@ -4,6 +4,7 @@ import (
 	"GoGinToDoList/constants"
 	"GoGinToDoList/dto"
 	"GoGinToDoList/entity"
+	"GoGinToDoList/helpers"
 	"GoGinToDoList/repository"
 	"context"
 	"fmt"
@@ -13,6 +14,7 @@ import (
 type (
 	UserService interface {
 		RegisterUser(ctx context.Context, req dto.UserCreateRequest) (dto.UserResponse, error)
+		Verify(ctx context.Context, req dto.UserLoginRequest) (dto.UserLoginResponse, error)
 	}
 
 	userService struct {
@@ -65,4 +67,24 @@ func (s *userService) RegisterUser(ctx context.Context, req dto.UserCreateReques
 		Email:       userReq.Email,
 	}, nil
 
+}
+
+func (s *userService) Verify(ctx context.Context, req dto.UserLoginRequest) (dto.UserLoginResponse, error) {
+	check, flag, err := s.userRepo.CheckEmail(ctx, nil, req.Email)
+
+	if err != nil || !flag {
+		return dto.UserLoginResponse{}, dto.ErrEmailNotFound
+	}
+
+	checkPassword, err := helpers.CheckPassword(check.Password, []byte(req.Password))
+	if err != nil || !checkPassword {
+		return dto.UserLoginResponse{}, dto.ErrPasswordNotMatch
+	}
+
+	token := s.jwtService.GenerateToken(check.ID.String(), check.Role)
+
+	return dto.UserLoginResponse{
+		Token: token,
+		Role:  check.Role,
+	}, nil
 }
