@@ -6,6 +6,7 @@ import (
 	"GoGinToDoList/entity"
 	"GoGinToDoList/repository"
 	"context"
+	"fmt"
 	"sync"
 )
 
@@ -34,6 +35,7 @@ func (s *userService) RegisterUser(ctx context.Context, req dto.UserCreateReques
 	defer mu.Unlock()
 
 	_, flag, _ := s.userRepo.CheckEmail(ctx, nil, req.Email)
+	fmt.Print(flag)
 	if flag {
 		return dto.UserResponse{}, dto.ErrEmailAlreadyExists
 	}
@@ -45,6 +47,7 @@ func (s *userService) RegisterUser(ctx context.Context, req dto.UserCreateReques
 		Email:       req.Email,
 		Role:        constants.ENUM_ROLE_USER,
 	}
+	fmt.Print(user)
 
 	userReq, err := s.userRepo.RegisterUser(ctx, nil, user)
 

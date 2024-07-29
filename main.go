@@ -1,6 +1,7 @@
 package main
 
 import (
+	"GoGinToDoList/cmd"
 	"GoGinToDoList/config"
 	"GoGinToDoList/controller"
 	"GoGinToDoList/middlewares"
@@ -15,6 +16,11 @@ import (
 func main() {
 	db := config.SetUpDBConnection()
 	defer config.CloseDBConnection(db)
+
+	if len(os.Args) > 1 {
+		cmd.Command(db)
+		return
+	}
 
 	var (
 		// Implement Dependency injection

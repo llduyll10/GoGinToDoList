@@ -41,9 +41,9 @@ func (r *userRepository) CheckEmail(ctx context.Context, tx *gorm.DB, email stri
 	}
 
 	var user entity.User
-
 	if err := tx.WithContext(ctx).Where("email = ?", email).Take(&user).Error; err != nil {
 		return entity.User{}, false, err
 	}
+
 	return user, true, nil
 }

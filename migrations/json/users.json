@@ -1,0 +1,16 @@
+[
+  {
+    "name": "admin",
+    "phone_number": "08123456789",
+    "email": "admin1234@gmail.com",
+    "password": "admin1234",
+    "role": "admin"
+  },
+  {
+    "name": "user",
+    "phone_number": "08123456789",
+    "email": "user1234@gmail.com",
+    "password": "user1234",
+    "role": "user"
+  }
+]
