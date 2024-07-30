@@ -8,9 +8,10 @@ import (
 	"GoGinToDoList/repository"
 	"GoGinToDoList/routes"
 	"GoGinToDoList/service"
-	"github.com/gin-gonic/gin"
 	"log"
 	"os"
+
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
@@ -44,7 +45,7 @@ func main() {
 
 	var serve string
 	if os.Getenv("APP_ENV") == "localhost" {
-		serve = "127.0.0.1:" + port
+		serve = "0.0.0.0:" + port
 	} else {
 		serve = ":" + port
 	}

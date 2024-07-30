@@ -3,10 +3,11 @@ package config
 import (
 	"GoGinToDoList/constants"
 	"fmt"
+	"os"
+
 	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"os"
 )
 
 func SetUpDBConnection() *gorm.DB {
@@ -31,6 +32,7 @@ func SetUpDBConnection() *gorm.DB {
 	if err != nil {
 		panic(err)
 	}
+	fmt.Print("DB OK")
 	return db
 }
 
